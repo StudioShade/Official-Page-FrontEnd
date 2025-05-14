@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
-import { MainIntroduce, Service } from '../const/const';
+import { MainIntroduce } from '../const/SConst';
 
 import Logo from '../../../public/images/logo.png';
+import { STab, TabContentProps } from "../components/STab"
 
 enum PageRoute {
     Home = "/home",
@@ -26,16 +27,42 @@ const components: ComponentInfo[] = [
     { id: 1, title: "Button", description: "Reusable button component", link: "/components/button" },
     { id: 2, title: "Card", description: "Card UI block", link: "/components/card" },
     { id: 3, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 4, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 5, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 6, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 7, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 8, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 9, title: "Modal", description: "Popup modal window", link: "/components/modal" },
+    { id: 10, title: "Modal", description: "Popup modal window", link: "/components/modal" },
 ];
 
 
+const tabItems: TabContentProps[] = [
+    { title: "소개" },
+    { title: "기능" },
+    { title: "문의" }
+];
+
+const initialize = () => {
+
+}
+
+
 const MainPage = () => {
+    const [isContentHover, setContentHover] = useState<boolean>(false)
+    const [isCompanyIntroduce, setCompanyInstroduce] = useState<boolean>(false)
+    const [isServiceIntroduce, setServiceIntroduce] = useState<boolean>(false)
+
     const router = useRouter();
 
     const handleClick = (page: PageRoute) => () => {
 
         router.push(page); // page가 곧 URL이니까 바로 push 가능
     };
+
+    useEffect(() => {
+        initialize()
+    }, []);
 
 
     return (
@@ -50,38 +77,69 @@ const MainPage = () => {
                     </div>
                 </div>
                 <nav id="introduce" className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-6">
-                    <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold">
-                        {Service[0]}
-                    </button>
-                    <button onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
-                        {Service[1]}
-                    </button>
-                    <button onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
-                        {Service[2]}
-                    </button>
-                    <button onClick={handleClick(PageRoute.Contact)} className="text-gray-600 hover:text-black hover:font-bold">
-                        {Service[3]}
-                    </button>
+                    <div onMouseEnter={() => setContentHover(true)}
+                        onMouseLeave={() => setContentHover(false)}>
+                        <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold" >
+                            {MainIntroduce[0]}
+                        </button>
+                        {isContentHover && (
+                            <div className="absolute top-full left-0 mt-2 w-[600px] bg-white shadow-lg border rounded-xl z-50 p-6 grid grid-cols-2 gap-6">
+                                {/* 섹션 1 */}
+                                <div>
+                                    <h4 className="text-sm font-bold text-gray-700 mb-2">플랫폼 서비스</h4>
+                                    <ul className="space-y-1 text-sm text-gray-600">
+                                        <li><a href="#">배달의민족</a></li>
+                                        <li><a href="#">배민상회</a></li>
+                                        <li><a href="#">배민스토어</a></li>
+                                    </ul>
+                                </div>
+
+                                {/* 섹션 2 */}
+                                <div>
+                                    <h4 className="text-sm font-bold text-gray-700 mb-2">기술 서비스</h4>
+                                    <ul className="space-y-1 text-sm text-gray-600">
+                                        <li><a href="#">API 안내</a></li>
+                                        <li><a href="#">배민 클라우드</a></li>
+                                        <li><a href="#">기술 블로그</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
+                        {MainIntroduce[1]}
+                    </div>
+                    <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
+                        {MainIntroduce[2]}
+                    </div>
                 </nav>
 
                 <nav className="space-x-6 hidden md:flex">
-                    
+                    <div>
+
+                    </div>
                 </nav>
+                <div className="displ">
+
+                </div>
             </header>
             <main className="flex flex-1 flex-col items-center justify-center text-center px-6">
                 {
                     components.map((component) => (
-                        <a
-                            key={component.id}
-                            href={component.link}
+                        <a key={component.id} href={component.link}
                             className="p-6 border rounded-xl hover:shadow-lg transition">
                             <h2 className="text-xl font-semibold mb-2">{component.title}</h2>
                             <p className="text-gray-600">{component.description}</p>
                         </a>))
                 }
 
-                <footer className="w-full py-4 text-center text-gray-500 text-sm">
-                    © 2025 Studio Shade. All rights reserved.
+                <footer>
+                    <div className="w-full py-4 text-left ml-0.5 text-gray-500 text-sm">
+
+                    </div>
+                    <p>
+                        © 2025 Studio Shade. All rights reserved.
+                    </p>
                 </footer>
             </main>
         </div>

@@ -1,4 +1,11 @@
-import {Service} from "../const/const"
+import {Service} from "../const/SConst"
+
+type contentInfo = {
+    title : string,
+    description : string,
+    img : string,
+    
+}
 
 const SContent = () => {
     return <div>
