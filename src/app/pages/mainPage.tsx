@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
-import { MainIntroduce } from '../const/SConst';
+import { MainIntroduce, SubContent } from '../const/SConst';
 
 import Logo from '../../../public/images/logo.png';
-import { STab, TabContentProps } from "../components/STab"
+import SSubContent from "../components/SSubContent";
 
 enum PageRoute {
     Home = "/home",
@@ -36,28 +36,41 @@ const components: ComponentInfo[] = [
     { id: 10, title: "Modal", description: "Popup modal window", link: "/components/modal" },
 ];
 
-
-const tabItems: TabContentProps[] = [
-    { title: "소개" },
-    { title: "기능" },
-    { title: "문의" }
-];
-
 const initialize = () => {
 
 }
 
-
 const MainPage = () => {
+    useEffect(() => {
+        console.log("first insert")
+        initialize()
+    }, [])
+
     const [isContentHover, setContentHover] = useState<boolean>(false)
-    const [isCompanyIntroduce, setCompanyInstroduce] = useState<boolean>(false)
-    const [isServiceIntroduce, setServiceIntroduce] = useState<boolean>(false)
+    const [isNeedsHover, setNeedsHover] = useState<boolean>(false)
+
+    const introduceCompanySubContent = [
+        {
+            title : "경영 철학",
+            description : "",
+            img : ""
+        },
+        {
+            title : "",
+            description : "",
+            img : ""
+        },
+        {
+            title : "인재상",
+            description : "",
+            img : ""
+        }
+    ]
 
     const router = useRouter();
 
     const handleClick = (page: PageRoute) => () => {
-
-        router.push(page); // page가 곧 URL이니까 바로 push 가능
+        router.push(page);// page가 곧 URL이니까 바로 push 가능
     };
 
     useEffect(() => {
@@ -82,29 +95,6 @@ const MainPage = () => {
                         <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold" >
                             {MainIntroduce[0]}
                         </button>
-                        {isContentHover && (
-                            <div className="absolute top-full left-0 mt-2 w-[600px] bg-white shadow-lg border rounded-xl z-50 p-6 grid grid-cols-2 gap-6">
-                                {/* 섹션 1 */}
-                                <div>
-                                    <h4 className="text-sm font-bold text-gray-700 mb-2">플랫폼 서비스</h4>
-                                    <ul className="space-y-1 text-sm text-gray-600">
-                                        <li><a href="#">배달의민족</a></li>
-                                        <li><a href="#">배민상회</a></li>
-                                        <li><a href="#">배민스토어</a></li>
-                                    </ul>
-                                </div>
-
-                                {/* 섹션 2 */}
-                                <div>
-                                    <h4 className="text-sm font-bold text-gray-700 mb-2">기술 서비스</h4>
-                                    <ul className="space-y-1 text-sm text-gray-600">
-                                        <li><a href="#">API 안내</a></li>
-                                        <li><a href="#">배민 클라우드</a></li>
-                                        <li><a href="#">기술 블로그</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        )}
                     </div>
                     <div onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[1]}
@@ -112,19 +102,28 @@ const MainPage = () => {
                     <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[2]}
                     </div>
+                    <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
+                        {MainIntroduce[3]}
+                    </div>
                 </nav>
 
                 <nav className="space-x-6 hidden md:flex">
                     <div>
-
+                        <p>{SubContent[0]}</p>
                     </div>
                 </nav>
                 <div className="displ">
 
                 </div>
             </header>
+            {isContentHover && (
+                            <div onMouseEnter={() => setContentHover(true)}
+                                onMouseLeave={() => setContentHover(false)}>
+                                <SSubContent info = {introduceCompanySubContent}></SSubContent>
+                            </div>
+                        )}
             <main className="flex flex-1 flex-col items-center justify-center text-center px-6">
-                {
+                {                    
                     components.map((component) => (
                         <a key={component.id} href={component.link}
                             className="p-6 border rounded-xl hover:shadow-lg transition">
