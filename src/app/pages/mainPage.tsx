@@ -3,41 +3,18 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
+import PageRoute from "../feature/pageRoute";
 import { MainIntroduce, SubContent } from '../const/SConst';
 
 import Logo from '../../../public/images/logo.png';
+import Test from '../../../public/images/test_img.png';
 import SSubContent from "../components/SSubContent";
+import SContent, {contentType} from "../components/SContent"
+import SFooterContent from "../components/SFooterContent"
 
-enum PageRoute {
-    Home = "/home",
-    Wedaeng = "/wedaeng/introduce",
-    J = "/j/introduce",
-    WSE = "/wse/introduce",
-    Contact = "/contact"
-}
-
-type ComponentInfo = {
-    id: number;
-    title: string;
-    description: string;
-    link: string;
-};
-
-const components: ComponentInfo[] = [
-    { id: 1, title: "Button", description: "Reusable button component", link: "/components/button" },
-    { id: 2, title: "Card", description: "Card UI block", link: "/components/card" },
-    { id: 3, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 4, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 5, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 6, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 7, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 8, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 9, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-    { id: 10, title: "Modal", description: "Popup modal window", link: "/components/modal" },
-];
 
 const initialize = () => {
-
+    
 }
 
 const MainPage = () => {
@@ -46,8 +23,8 @@ const MainPage = () => {
         initialize()
     }, [])
 
-    const [isContentHover, setContentHover] = useState<boolean>(false)
-    const [isNeedsHover, setNeedsHover] = useState<boolean>(false)
+    const [isContentHover, setContentHover] = useState<boolean[]>([false, false, false])
+    const router = useRouter();
 
     const introduceCompanySubContent = [
         {
@@ -56,7 +33,7 @@ const MainPage = () => {
             img : ""
         },
         {
-            title : "",
+            title : "연혁",
             description : "",
             img : ""
         },
@@ -67,7 +44,44 @@ const MainPage = () => {
         }
     ]
 
-    const router = useRouter();
+    const introduceServicesSubContent = [
+        {
+            title : "위댕",
+            description : "",
+            img : ""
+        },
+        {
+            title : "뭐해먹지",
+            description : "",
+            img : ""
+        },
+        {
+            title : "J(제이) - 계획으로 살다.",
+            description : "",
+            img : ""
+        },
+    ]
+
+    const mainPageContent = [
+        {
+            type : contentType.onlyImage,
+            imgPath : Test,
+            title : "",
+            description : ""
+        },
+        {
+            type : contentType.onlyImage,
+            imgPath : Test,
+            title : "",
+            description : ""
+        },
+        {
+            type : contentType.onlyTitle,
+            imgPath : "",
+            title : "Studio Shade Official",
+            description : ""
+        }
+    ];
 
     const handleClick = (page: PageRoute) => () => {
         router.push(page);// page가 곧 URL이니까 바로 push 가능
@@ -79,7 +93,7 @@ const MainPage = () => {
 
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="relative flex flex-col min-h-screen">
             <header className="w-full py-6 px-8 bg-white shadow-md flex items-center justify-between">
                 <div className="flex flex-row items-center">
                     <div className="relative w-12 h-12 sm:w-8 sm:h-8 md:w-12 md:h-12 flex-shrink-0">
@@ -90,16 +104,25 @@ const MainPage = () => {
                     </div>
                 </div>
                 <nav id="introduce" className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-6">
-                    <div onMouseEnter={() => setContentHover(true)}
-                        onMouseLeave={() => setContentHover(false)}>
+                    <div onMouseEnter={() => {
+                            setContentHover([true, false, false])
+                            
+                        }}
+                        onMouseLeave={() => setContentHover([false, false, false])}>
                         <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold" >
                             {MainIntroduce[0]}
                         </button>
                     </div>
-                    <div onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
+                    <div onMouseEnter={() => setContentHover([false, true, false])}
+                        onMouseLeave={() => setContentHover([false, false, false])}
+                    
+                        onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[1]}
                     </div>
-                    <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
+                    <div onMouseEnter={() => setContentHover([false, false, true])}
+                        onMouseLeave={() => setContentHover([false, false, false])}
+                    
+                        onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[2]}
                     </div>
                     <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
@@ -117,29 +140,18 @@ const MainPage = () => {
                 </div>
             </header>
             {isContentHover && (
-                            <div onMouseEnter={() => setContentHover(true)}
-                                onMouseLeave={() => setContentHover(false)}>
+                            <div className="absolute top-[80px] left-0 w-full z-10 bg-white shadow-md"
+                                onMouseEnter={() => {
+                                    if(isContentHover[0] == true)
+                                    setContentHover()
+                                }}
+                                onMouseLeave={() => setContentHover([false, false, false])}>
                                 <SSubContent info = {introduceCompanySubContent}></SSubContent>
                             </div>
                         )}
-            <main className="flex flex-1 flex-col items-center justify-center text-center px-6">
-                {                    
-                    components.map((component) => (
-                        <a key={component.id} href={component.link}
-                            className="p-6 border rounded-xl hover:shadow-lg transition">
-                            <h2 className="text-xl font-semibold mb-2">{component.title}</h2>
-                            <p className="text-gray-600">{component.description}</p>
-                        </a>))
-                }
-
-                <footer>
-                    <div className="w-full py-4 text-left ml-0.5 text-gray-500 text-sm">
-
-                    </div>
-                    <p>
-                        © 2025 Studio Shade. All rights reserved.
-                    </p>
-                </footer>
+            <main className="flex flex-col items-center justify-center px-6">
+                <SContent info={mainPageContent}/>
+                <SFooterContent/>
             </main>
         </div>
     );

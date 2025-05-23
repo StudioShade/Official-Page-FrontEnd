@@ -3,7 +3,6 @@
 type subContentInfo = {
     title : string,
     description : string,
-    
     img : string,   
 }
 
@@ -13,13 +12,11 @@ type SSubContentProps = {
 
 const SSubContent = ({ info }: SSubContentProps) => {
     return (
-        <div className="w-full flex flex-row bg-white">
-            <ul className="space-x-1 text-sm text-gray-600">
+        <ul className="w-full flex flex-row items-center bg-white">
                 {info.map((content) => (
-                    <li key={content.title}>{content.title}</li>
+                    <li key={content.title} className="">{content.title}</li>
                 ))}
-            </ul>
-        </div>
+        </ul>
     );
 };
 
