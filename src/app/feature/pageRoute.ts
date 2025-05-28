@@ -1,8 +1,8 @@
 enum PageRoute {
     Home = "/home",
-    Wedaeng = "/wedaeng/introduce",
-    J = "/j/introduce",
-    WSE = "/wse/introduce",
+    Wedaeng = "/wedaeng",
+    J = "/j",
+    WSE = "/wse",
     Contact = "/contact"
 }
 

@@ -12,9 +12,80 @@ import SSubContent from "../components/SSubContent";
 import SContent, {contentType} from "../components/SContent"
 import SFooterContent from "../components/SFooterContent"
 
+const introduceCompanySubContent = [
+    {
+        title : "경영 철학",
+        description : "",
+        img : "",
+        pagePath : PageRoute.WSE
+    },
+    {
+        title : "연혁",
+        description : "",
+        img : ""
+    },
+    {
+        title : "인재상",
+        description : "",
+        img : ""
+    }
+]
+
+const introduceServicesSubContent = [
+    {
+        title : "위댕",
+        description : "",
+        img : ""
+    },
+    {
+        title : "뭐해먹지",
+        description : "",
+        img : ""
+    },
+    {
+        title : "J(제이) - 계획으로 살다.",
+        description : "",
+        img : ""
+    },
+]
+
+const mainPageContent = [
+    {
+        type : contentType.onlyImage,
+        imgPath : Test,
+        title : "",
+        description : ""
+    },
+    {
+        type : contentType.onlyImage,
+        imgPath : Test,
+        title : "",
+        description : ""
+    },
+    {
+        type : contentType.onlyTitle,
+        imgPath : "",
+        title : "Studio Shade Official",
+        description : ""
+    }
+];
 
 const initialize = () => {
     
+}
+
+const getContent = (subcontentType: number) => {
+    if (subcontentType == 1) {
+        return introduceCompanySubContent
+    }
+    else if (subcontentType == 2) {
+        return introduceServicesSubContent
+    }
+    else if (subcontentType == 3) {
+        return mainPageContent
+    } else {
+        return []
+    }
 }
 
 const MainPage = () => {
@@ -23,73 +94,13 @@ const MainPage = () => {
         initialize()
     }, [])
 
-    const [isContentHover, setContentHover] = useState<boolean[]>([false, false, false])
+    const [isContentHover, setContentHover] = useState<boolean>(false)
+    const [contentTypeHover, setContentTypeHover] = useState<number>(0)
     const router = useRouter();
-
-    const introduceCompanySubContent = [
-        {
-            title : "경영 철학",
-            description : "",
-            img : ""
-        },
-        {
-            title : "연혁",
-            description : "",
-            img : ""
-        },
-        {
-            title : "인재상",
-            description : "",
-            img : ""
-        }
-    ]
-
-    const introduceServicesSubContent = [
-        {
-            title : "위댕",
-            description : "",
-            img : ""
-        },
-        {
-            title : "뭐해먹지",
-            description : "",
-            img : ""
-        },
-        {
-            title : "J(제이) - 계획으로 살다.",
-            description : "",
-            img : ""
-        },
-    ]
-
-    const mainPageContent = [
-        {
-            type : contentType.onlyImage,
-            imgPath : Test,
-            title : "",
-            description : ""
-        },
-        {
-            type : contentType.onlyImage,
-            imgPath : Test,
-            title : "",
-            description : ""
-        },
-        {
-            type : contentType.onlyTitle,
-            imgPath : "",
-            title : "Studio Shade Official",
-            description : ""
-        }
-    ];
 
     const handleClick = (page: PageRoute) => () => {
         router.push(page);// page가 곧 URL이니까 바로 push 가능
     };
-
-    useEffect(() => {
-        initialize()
-    }, []);
 
 
     return (
@@ -105,23 +116,25 @@ const MainPage = () => {
                 </div>
                 <nav id="introduce" className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-6">
                     <div onMouseEnter={() => {
-                            setContentHover([true, false, false])
-                            
-                        }}
-                        onMouseLeave={() => setContentHover([false, false, false])}>
+                            setContentHover(true);
+                            setContentTypeHover(1);
+                        }}>
                         <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold" >
                             {MainIntroduce[0]}
                         </button>
                     </div>
-                    <div onMouseEnter={() => setContentHover([false, true, false])}
-                        onMouseLeave={() => setContentHover([false, false, false])}
+                    <div onMouseEnter={() => {
+                            setContentHover(true);
+                            setContentTypeHover(2);
+                        }}
                     
                         onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[1]}
                     </div>
-                    <div onMouseEnter={() => setContentHover([false, false, true])}
-                        onMouseLeave={() => setContentHover([false, false, false])}
-                    
+                    <div onMouseEnter={() => {
+                            setContentHover(true);
+                            setContentTypeHover(3);
+                        }}
                         onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
                         {MainIntroduce[2]}
                     </div>
@@ -141,16 +154,24 @@ const MainPage = () => {
             </header>
             {isContentHover && (
                             <div className="absolute top-[80px] left-0 w-full z-10 bg-white shadow-md"
-                                onMouseEnter={() => {
-                                    if(isContentHover[0] == true)
-                                    setContentHover()
-                                }}
-                                onMouseLeave={() => setContentHover([false, false, false])}>
-                                <SSubContent info = {introduceCompanySubContent}></SSubContent>
+                                onMouseEnter={() => setContentHover(true)}
+                                onMouseLeave={() => setContentHover(false)}>
+                                <SSubContent info = {
+                                        getContent(contentTypeHover)
+                                }></SSubContent>
                             </div>
                         )}
             <main className="flex flex-col items-center justify-center px-6">
-                <SContent info={mainPageContent}/>
+                { (() => {
+                    switch(contentTypeHover) {
+                        case 0:
+                            return <SContent info={mainPageContent}/>
+                        case 1:
+                            return <SContent info={mainPageContent}/>
+                        case 2:
+
+                    };})()
+                };
                 <SFooterContent/>
             </main>
         </div>
