@@ -3,72 +3,29 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
-import PageRoute from "../feature/pageRoute";
-import { MainIntroduce, SubContent } from '../const/SConst';
+import { MainIntroduce, SubContent, CompanyInformation} from '../const/SConst';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../feature/providers/store';
 
 import Logo from '../../../public/images/logo.png';
 import Test from '../../../public/images/test_img.png';
 import SSubContent from "../components/SSubContent";
-import SContent, {contentType} from "../components/SContent"
-import SFooterContent from "../components/SFooterContent"
 
-const introduceCompanySubContent = [
-    {
-        title : "경영 철학",
-        description : "",
-        img : "",
-        pagePath : PageRoute.WSE
-    },
-    {
-        title : "연혁",
-        description : "",
-        img : ""
-    },
-    {
-        title : "인재상",
-        description : "",
-        img : ""
-    }
-]
+enum PageRoute {
+    Home = "/home",
+    Wedaeng = "/wedaeng/introduce",
+    J = "/j/introduce",
+    WSE = "/wse/introduce",
+    Contact = "/contact"
+}
 
-const introduceServicesSubContent = [
-    {
-        title : "위댕",
-        description : "",
-        img : ""
-    },
-    {
-        title : "뭐해먹지",
-        description : "",
-        img : ""
-    },
-    {
-        title : "J(제이) - 계획으로 살다.",
-        description : "",
-        img : ""
-    },
-]
-
-const mainPageContent = [
-    {
-        type : contentType.onlyImage,
-        imgPath : Test,
-        title : "",
-        description : ""
-    },
-    {
-        type : contentType.onlyImage,
-        imgPath : Test,
-        title : "",
-        description : ""
-    },
-    {
-        type : contentType.onlyTitle,
-        imgPath : "",
-        title : "Studio Shade Official",
-        description : ""
-    }
-];
+type ComponentInfo = {
+    id: number;
+    title: string;
+    description: string;
+    link: string;
+};
 
 const initialize = () => {
     
@@ -94,8 +51,32 @@ const MainPage = () => {
         initialize()
     }, [])
 
+    const dispatch = useDispatch<AppDispatch>();
+    const hoverState = useSelector((state: RootState) => state.hover.hoverState);
+
+    const [isAreaHover, setAreaHover] = useState<boolean>(false)
     const [isContentHover, setContentHover] = useState<boolean>(false)
-    const [contentTypeHover, setContentTypeHover] = useState<number>(0)
+
+
+
+    const introduceCompanySubContent = [
+        {
+            title : "경영 철학",
+            description : "",
+            img : ""
+        },
+        {
+            title : "연혁",
+            description : "",
+            img : ""
+        },
+        {
+            title : "인재상",
+            description : "",
+            img : ""
+        }
+    ]
+
     const router = useRouter();
 
     const handleClick = (page: PageRoute) => () => {
@@ -104,8 +85,10 @@ const MainPage = () => {
 
 
     return (
-        <div className="relative flex flex-col min-h-screen">
-            <header className="w-full py-6 px-8 bg-white shadow-md flex items-center justify-between">
+        <div className="flex flex-col min-h-screen">
+            <header className="w-full py-6 px-15 flex flex-row bg-[#1b1e26] shadow-md items-center justify-between" 
+                onMouseEnter={() => setAreaHover(true)}
+                onMouseLeave={() => {setAreaHover(false); setContentHover(false);}}>
                 <div className="flex flex-row items-center">
                     <div className="relative w-12 h-12 sm:w-8 sm:h-8 md:w-12 md:h-12 flex-shrink-0">
                         <Image src={Logo} alt="logo" fill className="object-contain" />
@@ -114,31 +97,28 @@ const MainPage = () => {
                         Studio Shade
                     </div>
                 </div>
-                <nav id="introduce" className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-6">
-                    <div onMouseEnter={() => {
-                            setContentHover(true);
-                            setContentTypeHover(1);
-                        }}>
-                        <button onClick={handleClick(PageRoute.Wedaeng)} className="text-gray-600 hover:text-black hover:font-bold" >
-                            {MainIntroduce[0]}
-                        </button>
+                <nav id="introduce" className="absolute text-white text-xl left-1/2 transform -translate-x-1/2 hidden md:flex space-x-20">
+                    <div onMouseEnter={() => setContentHover(true)}
+                        onMouseLeave={() => setContentHover(false)}
+                        onClick={handleClick(PageRoute.Wedaeng)} className="hover:font-bold" >
+                        {MainIntroduce[0]}
                     </div>
-                    <div onMouseEnter={() => {
-                            setContentHover(true);
-                            setContentTypeHover(2);
-                        }}
-                    
-                        onClick={handleClick(PageRoute.J)} className="text-gray-600 hover:text-black hover:font-bold">
+                    <div 
+                        onMouseEnter={() => setContentHover(true)}
+                        onMouseLeave={() => setContentHover(false)}
+                        onClick={handleClick(PageRoute.J)} className="hover:font-bold">
                         {MainIntroduce[1]}
                     </div>
-                    <div onMouseEnter={() => {
-                            setContentHover(true);
-                            setContentTypeHover(3);
-                        }}
-                        onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
+                    <div 
+                        onMouseEnter={() => setContentHover(true)}
+                        onMouseLeave={() => setContentHover(false)}
+                        onClick={handleClick(PageRoute.WSE)} className="hover:font-bold">
                         {MainIntroduce[2]}
                     </div>
-                    <div onClick={handleClick(PageRoute.WSE)} className="text-gray-600 hover:text-black hover:font-bold">
+                    <div 
+                        onMouseEnter={() => setContentHover(true)}
+                        onMouseLeave={() => setContentHover(false)}
+                        onClick={handleClick(PageRoute.WSE)} className="hover:font-bold">
                         {MainIntroduce[3]}
                     </div>
                 </nav>
@@ -148,31 +128,41 @@ const MainPage = () => {
                         <p>{SubContent[0]}</p>
                     </div>
                 </nav>
-                <div className="displ">
-
-                </div>
             </header>
-            {isContentHover && (
-                            <div className="absolute top-[80px] left-0 w-full z-10 bg-white shadow-md"
-                                onMouseEnter={() => setContentHover(true)}
+                        {isAreaHover && isContentHover && (
+                            <div onMouseEnter={() => setContentHover(true)}
                                 onMouseLeave={() => setContentHover(false)}>
                                 <SSubContent info = {
                                         getContent(contentTypeHover)
                                 }></SSubContent>
                             </div>
                         )}
-            <main className="flex flex-col items-center justify-center px-6">
-                { (() => {
-                    switch(contentTypeHover) {
-                        case 0:
-                            return <SContent info={mainPageContent}/>
-                        case 1:
-                            return <SContent info={mainPageContent}/>
-                        case 2:
-
-                    };})()
-                };
-                <SFooterContent/>
+            <main className="flex flex-1 flex-col text-center px-6">
+                
+                <footer className="w-full py-10 px-20 text-left items-start justify-start">
+                    <div className="flex flex-row space-x-5">
+                        <p className="hover:font-bold hover:cursor-pointer">
+                            오시는 길
+                        </p>
+                        <p className="hover:font-bold hover:cursor-pointer">
+                            공지사항
+                        </p>
+                        <p className="hover:font-bold hover:cursor-pointer">
+                            개인정보처리방침
+                        </p>
+                    </div>
+                    <div className="flex flex-col py-5 space-y-1">
+                        <p className="font-bold">
+                            (주)스튜디오 셰이드
+                        </p>
+                        <p>
+                            사업자 등록번호 : {CompanyInformation[0]} | CEO : {CompanyInformation[1]} | 주소 :  {CompanyInformation[2]}
+                        </p>
+                        <p>
+                            © 2025 Studio Shade. All rights reserved.
+                        </p>
+                    </div>
+                </footer>
             </main>
         </div>
     );

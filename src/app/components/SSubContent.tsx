@@ -18,8 +18,8 @@ const SSubContent = ({ info }: SSubContentProps) => {
     const router = useRouter();
 
     return (
-        <div className="w-full flex justify-center bg-white p-4">
-            <ul className="flex flex-row space-x-4">
+        <div className="w-full flex flex-row items-center justify-center bg-white">
+            <ul className="space-x-1 text-sm text-gray-600">
                 {info.map((content) => (
                     <li
                         key={content.title}
