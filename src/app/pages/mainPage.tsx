@@ -158,12 +158,12 @@ const MainPage = () => {
 
     return (
         <div className="relative flex flex-col min-h-screen overflow-x-hidden">
-            <header className="w-full py-6 px-15 flex flex-row bg-[#1b1e26] shadow-md items-center justify-between">
+            <header className="w-full py-4 px-15 flex flex-row bg-[#1b1e26] shadow-md items-center justify-between">
                 <div className="flex flex-row items-center">
-                        <div className="relative w-20 h-20 sm:w-14 sm:h-14 md:w-20 md:h-20 flex-shrink-0">
+                        <div className="relative w-16 h-16 sm:w-12 sm:h-12 md:w-16 md:h-16 flex-shrink-0">
                             <Image src={ASSET_PATH.logo} alt="Studio Shade logo" fill className="object-contain" priority />
                     </div>
-                    <div className="ml-5 text-xl sm:text-lg md:text-2xl font-bold text-gray-900">
+                    <div className="ml-4 text-lg sm:text-base md:text-xl font-bold text-white">
                         Studio Shade
                     </div>
                 </div>
@@ -198,7 +198,7 @@ const MainPage = () => {
                 </nav>
             </header>
                         {selectedNav !== null && (
-                            <div ref={subContentRef} className="pointer-events-none absolute left-0 top-[92px] z-40 flex w-full justify-center px-6">
+                            <div ref={subContentRef} className="pointer-events-none absolute left-0 top-[80px] z-40 flex w-full justify-center px-6">
                                 <SSubContent info={getContent(selectedNav + 1)} panelWidth={navWidth} />
                             </div>
                         )}
